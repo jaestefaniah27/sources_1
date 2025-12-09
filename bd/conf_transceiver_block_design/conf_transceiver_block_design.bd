@@ -7,21 +7,18 @@
       "name": "conf_transceiver_block_design",
       "rev_ctrl_bd_flag": "RevCtrlBdOff",
       "synth_flow_mode": "Hierarchical",
-      "tool_version": "2025.1",
-      "validated": "true"
+      "tool_version": "2025.1"
     },
     "design_tree": {
       "zynq_ultra_ps_e_0": "",
-      "CONFIGURABLE_SERIAL_0": "",
-      "SERIAL_INTERFACE_0": "",
       "axi_gpio_setup": "",
       "axi_gpio_rx": "",
       "axi_gpio_tx": "",
       "axi_gpio_out": "",
       "axi_smc": "",
       "rst_ps8_0_99M": "",
-      "xlconcat_0": "",
-      "axi_intc_tx_rdy_empty": ""
+      "axi_intc_tx_rdy_empty": "",
+      "CONFIGURABLE_SERIAL_0": ""
     },
     "ports": {
       "RD_0": {
@@ -1206,228 +1203,6 @@
           }
         }
       },
-      "CONFIGURABLE_SERIAL_0": {
-        "vlnv": "xilinx.com:module_ref:CONFIGURABLE_SERIAL_TOP:1.0",
-        "ip_revision": "1",
-        "xci_name": "conf_transceiver_block_design_CONFIGURABLE_SERIAL_0_0",
-        "xci_path": "ip/conf_transceiver_block_design_CONFIGURABLE_SERIAL_0_0/conf_transceiver_block_design_CONFIGURABLE_SERIAL_0_0.xci",
-        "inst_hier_path": "CONFIGURABLE_SERIAL_0",
-        "has_run_ip_tcl": "true",
-        "reference_info": {
-          "ref_type": "hdl",
-          "ref_name": "CONFIGURABLE_SERIAL_TOP",
-          "boundary_crc": "0x0"
-        },
-        "ports": {
-          "Reset": {
-            "type": "rst",
-            "direction": "I",
-            "parameters": {
-              "POLARITY": {
-                "value": "ACTIVE_LOW",
-                "value_src": "const_prop"
-              }
-            }
-          },
-          "Clk": {
-            "type": "clk",
-            "direction": "I",
-            "parameters": {
-              "ASSOCIATED_RESET": {
-                "value": "Reset",
-                "value_src": "constant"
-              },
-              "FREQ_HZ": {
-                "value": "99990005",
-                "value_src": "user_prop"
-              },
-              "CLK_DOMAIN": {
-                "value": "conf_transceiver_block_design_zynq_ultra_ps_e_0_0_pl_clk0",
-                "value_src": "default_prop"
-              }
-            }
-          },
-          "Data_in": {
-            "direction": "I",
-            "left": "8",
-            "right": "0"
-          },
-          "TX_Send": {
-            "direction": "I"
-          },
-          "TX_RDY": {
-            "direction": "O",
-            "parameters": {
-              "PortWidth": {
-                "value": "1",
-                "value_src": "default_prop"
-              }
-            }
-          },
-          "TD": {
-            "direction": "O"
-          },
-          "RD": {
-            "direction": "I"
-          },
-          "Data_out": {
-            "direction": "O",
-            "left": "8",
-            "right": "0"
-          },
-          "Data_read": {
-            "direction": "I"
-          },
-          "Full": {
-            "direction": "O"
-          },
-          "Empty": {
-            "direction": "O",
-            "parameters": {
-              "PortWidth": {
-                "value": "1",
-                "value_src": "default_prop"
-              }
-            }
-          },
-          "PAR_ERROR": {
-            "direction": "O"
-          },
-          "FRAME_ERROR": {
-            "direction": "O"
-          },
-          "ERROR_OK": {
-            "direction": "I"
-          },
-          "baudrate": {
-            "direction": "I",
-            "left": "21",
-            "right": "0"
-          },
-          "stop_bit": {
-            "direction": "I",
-            "left": "2",
-            "right": "0"
-          },
-          "parity": {
-            "direction": "I",
-            "left": "2",
-            "right": "0"
-          },
-          "bit_order": {
-            "direction": "I"
-          },
-          "data_bits": {
-            "direction": "I",
-            "left": "2",
-            "right": "0"
-          }
-        }
-      },
-      "SERIAL_INTERFACE_0": {
-        "vlnv": "xilinx.com:module_ref:SERIAL_INTERFACE:1.0",
-        "ip_revision": "1",
-        "xci_name": "conf_transceiver_block_design_SERIAL_INTERFACE_0_2",
-        "xci_path": "ip/conf_transceiver_block_design_SERIAL_INTERFACE_0_2/conf_transceiver_block_design_SERIAL_INTERFACE_0_2.xci",
-        "inst_hier_path": "SERIAL_INTERFACE_0",
-        "has_run_ip_tcl": "true",
-        "reference_info": {
-          "ref_type": "hdl",
-          "ref_name": "SERIAL_INTERFACE",
-          "boundary_crc": "0x0"
-        },
-        "ports": {
-          "PS_out": {
-            "direction": "O",
-            "left": "13",
-            "right": "0"
-          },
-          "PS_RX_DataRead_ErrorOk": {
-            "direction": "I",
-            "left": "1",
-            "right": "0"
-          },
-          "PS_TX_DataIn_Send": {
-            "direction": "I",
-            "left": "9",
-            "right": "0"
-          },
-          "PS_SERIAL_CONFIG": {
-            "direction": "I",
-            "left": "31",
-            "right": "0"
-          },
-          "Data_in": {
-            "direction": "O",
-            "left": "8",
-            "right": "0"
-          },
-          "TX_Send": {
-            "direction": "O"
-          },
-          "TX_RDY": {
-            "direction": "I",
-            "parameters": {
-              "PortWidth": {
-                "value": "1",
-                "value_src": "default_prop"
-              }
-            }
-          },
-          "Data_out": {
-            "direction": "I",
-            "left": "8",
-            "right": "0"
-          },
-          "Data_read": {
-            "direction": "O"
-          },
-          "Full": {
-            "direction": "I"
-          },
-          "Empty": {
-            "direction": "I",
-            "parameters": {
-              "PortWidth": {
-                "value": "1",
-                "value_src": "default_prop"
-              }
-            }
-          },
-          "PAR_ERROR": {
-            "direction": "I"
-          },
-          "FRAME_ERROR": {
-            "direction": "I"
-          },
-          "ERROR_OK": {
-            "direction": "O"
-          },
-          "baudrate": {
-            "direction": "O",
-            "left": "21",
-            "right": "0"
-          },
-          "stop_bit": {
-            "direction": "O",
-            "left": "2",
-            "right": "0"
-          },
-          "parity": {
-            "direction": "O",
-            "left": "2",
-            "right": "0"
-          },
-          "bit_order": {
-            "direction": "O"
-          },
-          "data_bits": {
-            "direction": "O",
-            "left": "2",
-            "right": "0"
-          }
-        }
-      },
       "axi_gpio_setup": {
         "vlnv": "xilinx.com:ip:axi_gpio:2.0",
         "ip_revision": "37",
@@ -1525,6 +1300,10 @@
               "M04_AXI"
             ],
             "bd_attributes": {
+              "BRIDGES": {
+                "value": "M00_AXI:M01_AXI:M02_AXI:M03_AXI:M04_AXI",
+                "value_src": "auto"
+              },
               "TYPE": {
                 "value": "interior",
                 "value_src": "default"
@@ -1696,14 +1475,6 @@
         "inst_hier_path": "rst_ps8_0_99M",
         "has_run_ip_tcl": "true"
       },
-      "xlconcat_0": {
-        "vlnv": "xilinx.com:ip:xlconcat:2.1",
-        "ip_revision": "7",
-        "xci_name": "conf_transceiver_block_design_xlconcat_0_1",
-        "xci_path": "ip/conf_transceiver_block_design_xlconcat_0_1/conf_transceiver_block_design_xlconcat_0_1.xci",
-        "inst_hier_path": "xlconcat_0",
-        "has_run_ip_tcl": "true"
-      },
       "axi_intc_tx_rdy_empty": {
         "vlnv": "xilinx.com:ip:axi_intc:4.1",
         "ip_revision": "21",
@@ -1733,6 +1504,66 @@
                 "value_src": "default"
               }
             }
+          }
+        }
+      },
+      "CONFIGURABLE_SERIAL_0": {
+        "vlnv": "xilinx.com:module_ref:CONFIGURABLE_SERIAL_TOP:1.0",
+        "ip_revision": "1",
+        "xci_name": "conf_transceiver_block_design_CONFIGURABLE_SERIAL_0_0",
+        "xci_path": "ip/conf_transceiver_block_design_CONFIGURABLE_SERIAL_0_0/conf_transceiver_block_design_CONFIGURABLE_SERIAL_0_0.xci",
+        "inst_hier_path": "CONFIGURABLE_SERIAL_0",
+        "has_run_ip_tcl": "true",
+        "reference_info": {
+          "ref_type": "hdl",
+          "ref_name": "CONFIGURABLE_SERIAL_TOP",
+          "boundary_crc": "0x0"
+        },
+        "ports": {
+          "Reset": {
+            "type": "rst",
+            "direction": "I"
+          },
+          "Clk": {
+            "type": "clk",
+            "direction": "I",
+            "parameters": {
+              "ASSOCIATED_RESET": {
+                "value": "Reset",
+                "value_src": "constant"
+              }
+            }
+          },
+          "PS_out": {
+            "direction": "O",
+            "left": "13",
+            "right": "0"
+          },
+          "PS_RX_DataRead_ErrorOk": {
+            "direction": "I",
+            "left": "1",
+            "right": "0"
+          },
+          "PS_TX_DataIn_Send": {
+            "direction": "I",
+            "left": "9",
+            "right": "0"
+          },
+          "PS_SERIAL_CONFIG": {
+            "direction": "I",
+            "left": "31",
+            "right": "0"
+          },
+          "TX_RDY_EMPTY": {
+            "direction": "O",
+            "left": "1",
+            "right": "0"
+          },
+          "TD": {
+            "direction": "O"
+          },
+          "RD": {
+            "direction": "I"
           }
         }
       }
@@ -1776,35 +1607,10 @@
       }
     },
     "nets": {
-      "CONFIGURABLE_SERIAL_0_Data_out": {
+      "CONFIGURABLE_SERIAL_0_PS_out": {
         "ports": [
-          "CONFIGURABLE_SERIAL_0/Data_out",
-          "SERIAL_INTERFACE_0/Data_out"
-        ]
-      },
-      "CONFIGURABLE_SERIAL_0_Empty": {
-        "ports": [
-          "CONFIGURABLE_SERIAL_0/Empty",
-          "SERIAL_INTERFACE_0/Empty",
-          "xlconcat_0/In1"
-        ]
-      },
-      "CONFIGURABLE_SERIAL_0_FRAME_ERROR": {
-        "ports": [
-          "CONFIGURABLE_SERIAL_0/FRAME_ERROR",
-          "SERIAL_INTERFACE_0/FRAME_ERROR"
-        ]
-      },
-      "CONFIGURABLE_SERIAL_0_Full": {
-        "ports": [
-          "CONFIGURABLE_SERIAL_0/Full",
-          "SERIAL_INTERFACE_0/Full"
-        ]
-      },
-      "CONFIGURABLE_SERIAL_0_PAR_ERROR": {
-        "ports": [
-          "CONFIGURABLE_SERIAL_0/PAR_ERROR",
-          "SERIAL_INTERFACE_0/PAR_ERROR"
+          "CONFIGURABLE_SERIAL_0/PS_out",
+          "axi_gpio_out/gpio_io_i"
         ]
       },
       "CONFIGURABLE_SERIAL_0_TD": {
@@ -1813,11 +1619,10 @@
           "TD_0"
         ]
       },
-      "CONFIGURABLE_SERIAL_0_TX_RDY": {
+      "CONFIGURABLE_SERIAL_0_TX_RDY_EMPTY": {
         "ports": [
-          "CONFIGURABLE_SERIAL_0/TX_RDY",
-          "xlconcat_0/In0",
-          "SERIAL_INTERFACE_0/TX_RDY"
+          "CONFIGURABLE_SERIAL_0/TX_RDY_EMPTY",
+          "axi_intc_tx_rdy_empty/intr"
         ]
       },
       "RD_0_1": {
@@ -1826,82 +1631,22 @@
           "CONFIGURABLE_SERIAL_0/RD"
         ]
       },
-      "SERIAL_INTERFACE_0_Data_in": {
-        "ports": [
-          "SERIAL_INTERFACE_0/Data_in",
-          "CONFIGURABLE_SERIAL_0/Data_in"
-        ]
-      },
-      "SERIAL_INTERFACE_0_Data_read": {
-        "ports": [
-          "SERIAL_INTERFACE_0/Data_read",
-          "CONFIGURABLE_SERIAL_0/Data_read"
-        ]
-      },
-      "SERIAL_INTERFACE_0_ERROR_OK": {
-        "ports": [
-          "SERIAL_INTERFACE_0/ERROR_OK",
-          "CONFIGURABLE_SERIAL_0/ERROR_OK"
-        ]
-      },
-      "SERIAL_INTERFACE_0_PS_out": {
-        "ports": [
-          "SERIAL_INTERFACE_0/PS_out",
-          "axi_gpio_out/gpio_io_i"
-        ]
-      },
-      "SERIAL_INTERFACE_0_TX_Send": {
-        "ports": [
-          "SERIAL_INTERFACE_0/TX_Send",
-          "CONFIGURABLE_SERIAL_0/TX_Send"
-        ]
-      },
-      "SERIAL_INTERFACE_0_baudrate": {
-        "ports": [
-          "SERIAL_INTERFACE_0/baudrate",
-          "CONFIGURABLE_SERIAL_0/baudrate"
-        ]
-      },
-      "SERIAL_INTERFACE_0_bit_order": {
-        "ports": [
-          "SERIAL_INTERFACE_0/bit_order",
-          "CONFIGURABLE_SERIAL_0/bit_order"
-        ]
-      },
-      "SERIAL_INTERFACE_0_data_bits": {
-        "ports": [
-          "SERIAL_INTERFACE_0/data_bits",
-          "CONFIGURABLE_SERIAL_0/data_bits"
-        ]
-      },
-      "SERIAL_INTERFACE_0_parity": {
-        "ports": [
-          "SERIAL_INTERFACE_0/parity",
-          "CONFIGURABLE_SERIAL_0/parity"
-        ]
-      },
-      "SERIAL_INTERFACE_0_stop_bit": {
-        "ports": [
-          "SERIAL_INTERFACE_0/stop_bit",
-          "CONFIGURABLE_SERIAL_0/stop_bit"
-        ]
-      },
-      "axi_gpio_0_gpio_io_o": {
-        "ports": [
-          "axi_gpio_setup/gpio_io_o",
-          "SERIAL_INTERFACE_0/PS_SERIAL_CONFIG"
-        ]
-      },
-      "axi_gpio_1_gpio_io_o": {
+      "axi_gpio_rx_gpio_io_o": {
         "ports": [
           "axi_gpio_rx/gpio_io_o",
-          "SERIAL_INTERFACE_0/PS_RX_DataRead_ErrorOk"
+          "CONFIGURABLE_SERIAL_0/PS_RX_DataRead_ErrorOk"
         ]
       },
-      "axi_gpio_2_gpio_io_o": {
+      "axi_gpio_setup_gpio_io_o": {
+        "ports": [
+          "axi_gpio_setup/gpio_io_o",
+          "CONFIGURABLE_SERIAL_0/PS_SERIAL_CONFIG"
+        ]
+      },
+      "axi_gpio_tx_gpio_io_o": {
         "ports": [
           "axi_gpio_tx/gpio_io_o",
-          "SERIAL_INTERFACE_0/PS_TX_DataIn_Send"
+          "CONFIGURABLE_SERIAL_0/PS_TX_DataIn_Send"
         ]
       },
       "axi_intc_tx_rdy_empty_irq": {
@@ -1918,14 +1663,8 @@
           "axi_gpio_rx/s_axi_aresetn",
           "axi_gpio_tx/s_axi_aresetn",
           "axi_gpio_out/s_axi_aresetn",
-          "CONFIGURABLE_SERIAL_0/Reset",
-          "axi_intc_tx_rdy_empty/s_axi_aresetn"
-        ]
-      },
-      "xlconcat_0_dout": {
-        "ports": [
-          "xlconcat_0/dout",
-          "axi_intc_tx_rdy_empty/intr"
+          "axi_intc_tx_rdy_empty/s_axi_aresetn",
+          "CONFIGURABLE_SERIAL_0/Reset"
         ]
       },
       "zynq_ultra_ps_e_0_pl_clk0": {
@@ -1938,8 +1677,8 @@
           "axi_gpio_rx/s_axi_aclk",
           "axi_gpio_tx/s_axi_aclk",
           "axi_gpio_out/s_axi_aclk",
-          "CONFIGURABLE_SERIAL_0/Clk",
-          "axi_intc_tx_rdy_empty/s_axi_aclk"
+          "axi_intc_tx_rdy_empty/s_axi_aclk",
+          "CONFIGURABLE_SERIAL_0/Clk"
         ]
       },
       "zynq_ultra_ps_e_0_pl_resetn0": {
