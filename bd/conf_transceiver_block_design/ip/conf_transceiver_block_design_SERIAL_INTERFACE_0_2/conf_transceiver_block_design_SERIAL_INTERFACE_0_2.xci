@@ -1,0 +1,61 @@
+{
+  "schema": "xilinx.com:schema:json_instance:1.0",
+  "ip_inst": {
+    "xci_name": "conf_transceiver_block_design_SERIAL_INTERFACE_0_2",
+    "cell_name": "SERIAL_INTERFACE_0",
+    "component_reference": "xilinx.com:module_ref:SERIAL_INTERFACE:1.0",
+    "ip_revision": "1",
+    "gen_directory": "../../../../../../CONFIGURABLE_TRANSCEIVER_SERIAL.gen/sources_1/bd/conf_transceiver_block_design/ip/conf_transceiver_block_design_SERIAL_INTERFACE_0_2",
+    "parameters": {
+      "component_parameters": {
+        "Component_Name": [ { "value": "conf_transceiver_block_design_SERIAL_INTERFACE_0_2", "resolve_type": "user", "usage": "all" } ]
+      },
+      "project_parameters": {
+        "ARCHITECTURE": [ { "value": "zynquplus" } ],
+        "BASE_BOARD_PART": [ { "value": "xilinx.com:zcu102:part0:3.4" } ],
+        "BOARD_CONNECTIONS": [ { "value": "" } ],
+        "DEVICE": [ { "value": "xczu9eg" } ],
+        "PACKAGE": [ { "value": "ffvb1156" } ],
+        "PREFHDL": [ { "value": "VERILOG" } ],
+        "SILICON_REVISION": [ { "value": "" } ],
+        "SIMULATOR_LANGUAGE": [ { "value": "MIXED" } ],
+        "SPEEDGRADE": [ { "value": "-2" } ],
+        "STATIC_POWER": [ { "value": "" } ],
+        "TEMPERATURE_GRADE": [ { "value": "E" } ]
+      },
+      "runtime_parameters": {
+        "IPCONTEXT": [ { "value": "IP_Integrator" } ],
+        "IPREVISION": [ { "value": "1" } ],
+        "MANAGED": [ { "value": "TRUE" } ],
+        "OUTPUTDIR": [ { "value": "../../../../../../CONFIGURABLE_TRANSCEIVER_SERIAL.gen/sources_1/bd/conf_transceiver_block_design/ip/conf_transceiver_block_design_SERIAL_INTERFACE_0_2" } ],
+        "SELECTEDSIMMODEL": [ { "value": "" } ],
+        "SHAREDDIR": [ { "value": "../../ipshared" } ],
+        "SWVERSION": [ { "value": "2025.1" } ],
+        "SYNTHESISFLOW": [ { "value": "OOC_HIERARCHICAL" } ]
+      }
+    },
+    "boundary": {
+      "ports": {
+        "PS_out": [ { "direction": "out", "size_left": "13", "size_right": "0" } ],
+        "PS_RX_DataRead_ErrorOk": [ { "direction": "in", "size_left": "1", "size_right": "0" } ],
+        "PS_TX_DataIn_Send": [ { "direction": "in", "size_left": "9", "size_right": "0" } ],
+        "PS_SERIAL_CONFIG": [ { "direction": "in", "size_left": "31", "size_right": "0" } ],
+        "Data_in": [ { "direction": "out", "size_left": "8", "size_right": "0" } ],
+        "TX_Send": [ { "direction": "out" } ],
+        "TX_RDY": [ { "direction": "in" } ],
+        "Data_out": [ { "direction": "in", "size_left": "8", "size_right": "0" } ],
+        "Data_read": [ { "direction": "out" } ],
+        "Full": [ { "direction": "in" } ],
+        "Empty": [ { "direction": "in" } ],
+        "PAR_ERROR": [ { "direction": "in" } ],
+        "FRAME_ERROR": [ { "direction": "in" } ],
+        "ERROR_OK": [ { "direction": "out" } ],
+        "baudrate": [ { "direction": "out", "size_left": "21", "size_right": "0" } ],
+        "stop_bit": [ { "direction": "out", "size_left": "2", "size_right": "0" } ],
+        "parity": [ { "direction": "out", "size_left": "2", "size_right": "0" } ],
+        "bit_order": [ { "direction": "out" } ],
+        "data_bits": [ { "direction": "out", "size_left": "2", "size_right": "0" } ]
+      }
+    }
+  }
+}
