@@ -7,7 +7,8 @@
       "name": "conf_transceiver_block_design",
       "rev_ctrl_bd_flag": "RevCtrlBdOff",
       "synth_flow_mode": "Hierarchical",
-      "tool_version": "2025.1"
+      "tool_version": "2025.1",
+      "validated": "true"
     },
     "design_tree": {
       "zynq_ultra_ps_e_0": "",
@@ -1522,7 +1523,13 @@
         "ports": {
           "Reset": {
             "type": "rst",
-            "direction": "I"
+            "direction": "I",
+            "parameters": {
+              "POLARITY": {
+                "value": "ACTIVE_LOW",
+                "value_src": "const_prop"
+              }
+            }
           },
           "Clk": {
             "type": "clk",
@@ -1531,6 +1538,14 @@
               "ASSOCIATED_RESET": {
                 "value": "Reset",
                 "value_src": "constant"
+              },
+              "FREQ_HZ": {
+                "value": "99990005",
+                "value_src": "user_prop"
+              },
+              "CLK_DOMAIN": {
+                "value": "conf_transceiver_block_design_zynq_ultra_ps_e_0_0_pl_clk0",
+                "value_src": "default_prop"
               }
             }
           },
@@ -1557,7 +1572,13 @@
           "TX_RDY_EMPTY": {
             "direction": "O",
             "left": "1",
-            "right": "0"
+            "right": "0",
+            "parameters": {
+              "PortWidth": {
+                "value": "2",
+                "value_src": "default_prop"
+              }
+            }
           },
           "TD": {
             "direction": "O"
