@@ -1,46 +1,128 @@
 {
    "ActiveEmotionalView":"Default View",
-   "Default View_ScaleFactor":"0.942403",
-   "Default View_TopLeft":"915,328",
+   "Default View_ScaleFactor":"0.555604",
+   "Default View_TopLeft":"277,286",
    "ExpandedHierarchyInLayout":"",
    "PinnedBlocks":"",
    "PinnedPorts":"",
    "guistr":"# # String gsaved with Nlview 7.8.0 2024-04-26 e1825d835c VDI=44 GEI=38 GUI=JA:21.0 TLS
 #  -string -flagsOSRD
-preplace port port-id_RD_0 -pg 1 -lvl 0 -x -10 -y 340 -defaultsOSRD
-preplace port port-id_TD_0 -pg 1 -lvl 6 -x 2010 -y 400 -defaultsOSRD
-preplace inst zynq_ultra_ps_e_0 -pg 1 -lvl 1 -x 330 -y 560 -defaultsOSRD
-preplace inst axi_gpio_setup -pg 1 -lvl 3 -x 1140 -y 740 -defaultsOSRD
-preplace inst axi_gpio_rx -pg 1 -lvl 3 -x 1140 -y 80 -defaultsOSRD
-preplace inst axi_gpio_tx -pg 1 -lvl 3 -x 1140 -y 220 -defaultsOSRD
-preplace inst axi_gpio_out -pg 1 -lvl 3 -x 1140 -y 600 -defaultsOSRD
-preplace inst axi_smc -pg 1 -lvl 2 -x 790 -y 560 -defaultsOSRD
-preplace inst rst_ps8_0_99M -pg 1 -lvl 1 -x 330 -y 760 -defaultsOSRD
-preplace inst axi_intc_tx_rdy_empty -pg 1 -lvl 3 -x 1140 -y 430 -defaultsOSRD
-preplace inst CONFIGURABLE_SERIAL_0 -pg 1 -lvl 4 -x 1520 -y 370 -defaultsOSRD
-preplace netloc axi_intc_tx_rdy_empty_irq 1 0 4 10 440 NJ 440 970J 520 1280
-preplace netloc rst_ps8_0_99M_peripheral_aresetn 1 1 3 650 450 990 320 NJ
-preplace netloc zynq_ultra_ps_e_0_pl_clk0 1 0 4 20 460 640 460 980 330 1300J
-preplace netloc zynq_ultra_ps_e_0_pl_resetn0 1 0 2 30 470 630
-preplace netloc CONFIGURABLE_SERIAL_0_TD 1 4 2 N 390 1900
-preplace netloc RD_0_1 1 0 4 NJ 340 NJ 340 NJ 340 1280J
-preplace netloc axi_gpio_setup_gpio_io_o 1 3 1 1310 400n
-preplace netloc CONFIGURABLE_SERIAL_0_PS_out 1 3 2 N 610 1740
-preplace netloc axi_gpio_tx_gpio_io_o 1 3 1 1290 230n
-preplace netloc axi_gpio_rx_gpio_io_o 1 3 1 1310 90n
-preplace netloc CONFIGURABLE_SERIAL_0_TX_RDY_EMPTY 1 2 3 1000 820 NJ 820 1730
-preplace netloc axi_smc_M00_AXI 1 2 1 950 520n
-preplace netloc axi_smc_M01_AXI 1 2 1 930 60n
-preplace netloc axi_smc_M02_AXI 1 2 1 960 200n
-preplace netloc axi_smc_M03_AXI 1 2 1 N 580
-preplace netloc axi_smc_M04_AXI 1 2 1 940 400n
-preplace netloc zynq_ultra_ps_e_0_M_AXI_HPM0_FPD 1 1 1 N 540
-levelinfo -pg 1 -10 330 790 1140 1520 1880 2010
-pagesize -pg 1 -db -bbox -sgen -100 0 2100 860
+preplace port port-id_UART_0_RX -pg 1 -lvl 0 -x -20 -y 2480 -defaultsOSRD
+preplace port port-id_UART_0_TX -pg 1 -lvl 4 -x 1560 -y 2440 -defaultsOSRD
+preplace port port-id_UART_1_RX -pg 1 -lvl 0 -x -20 -y 450 -defaultsOSRD
+preplace port port-id_UART_1_TX -pg 1 -lvl 4 -x 1560 -y 410 -defaultsOSRD
+preplace port port-id_UART_2_RX -pg 1 -lvl 0 -x -20 -y 620 -defaultsOSRD
+preplace port port-id_UART_2_TX -pg 1 -lvl 4 -x 1560 -y 580 -defaultsOSRD
+preplace port port-id_UART_3_RX -pg 1 -lvl 0 -x -20 -y 800 -defaultsOSRD
+preplace port port-id_UART_3_TX -pg 1 -lvl 4 -x 1560 -y 910 -defaultsOSRD
+preplace port port-id_UART_4_RX -pg 1 -lvl 0 -x -20 -y 830 -defaultsOSRD
+preplace port port-id_UART_4_TX -pg 1 -lvl 4 -x 1560 -y 1080 -defaultsOSRD
+preplace port port-id_UART_5_RX -pg 1 -lvl 0 -x -20 -y 860 -defaultsOSRD
+preplace port port-id_UART_5_TX -pg 1 -lvl 4 -x 1560 -y 1250 -defaultsOSRD
+preplace port port-id_UART_6_RX -pg 1 -lvl 0 -x -20 -y 1250 -defaultsOSRD
+preplace port port-id_UART_6_TX -pg 1 -lvl 4 -x 1560 -y 1430 -defaultsOSRD
+preplace port port-id_UART_7_RX -pg 1 -lvl 0 -x -20 -y 2000 -defaultsOSRD
+preplace port port-id_UART_7_TX -pg 1 -lvl 4 -x 1560 -y 1960 -defaultsOSRD
+preplace port port-id_UART_8_RX -pg 1 -lvl 0 -x -20 -y 2150 -defaultsOSRD
+preplace port port-id_UART_8_TX -pg 1 -lvl 4 -x 1560 -y 2110 -defaultsOSRD
+preplace port port-id_UART_9_RX -pg 1 -lvl 0 -x -20 -y 2330 -defaultsOSRD
+preplace port port-id_UART_9_TX -pg 1 -lvl 4 -x 1560 -y 2290 -defaultsOSRD
+preplace port port-id_UART_10_RX -pg 1 -lvl 0 -x -20 -y 120 -defaultsOSRD
+preplace port port-id_UART_10_TX -pg 1 -lvl 4 -x 1560 -y 80 -defaultsOSRD
+preplace port port-id_UART_11_RX -pg 1 -lvl 0 -x -20 -y 270 -defaultsOSRD
+preplace port port-id_UART_11_TX -pg 1 -lvl 4 -x 1560 -y 230 -defaultsOSRD
+preplace port port-id_UART_12_RX -pg 1 -lvl 0 -x -20 -y 1590 -defaultsOSRD
+preplace port port-id_UART_12_TX -pg 1 -lvl 4 -x 1560 -y 1600 -defaultsOSRD
+preplace port port-id_UART_13_RX -pg 1 -lvl 0 -x -20 -y 1820 -defaultsOSRD
+preplace port port-id_UART_13_TX -pg 1 -lvl 4 -x 1560 -y 1780 -defaultsOSRD
+preplace inst zynq_ultra_ps_e_0 -pg 1 -lvl 1 -x 330 -y 1480 -defaultsOSRD
+preplace inst rst_ps8_0_99M -pg 1 -lvl 1 -x 330 -y 1710 -defaultsOSRD
+preplace inst axi_smc -pg 1 -lvl 2 -x 920 -y 1480 -defaultsOSRD
+preplace inst irq_concat -pg 1 -lvl 2 -x 920 -y 1050 -defaultsOSRD
+preplace inst axi_intc_global -pg 1 -lvl 3 -x 1410 -y 760 -defaultsOSRD
+preplace inst Transceiver_0 -pg 1 -lvl 3 -x 1410 -y 2450 -defaultsOSRD
+preplace inst Transceiver_1 -pg 1 -lvl 3 -x 1410 -y 420 -defaultsOSRD
+preplace inst Transceiver_2 -pg 1 -lvl 3 -x 1410 -y 590 -defaultsOSRD
+preplace inst Transceiver_3 -pg 1 -lvl 3 -x 1410 -y 920 -defaultsOSRD
+preplace inst Transceiver_4 -pg 1 -lvl 3 -x 1410 -y 1090 -defaultsOSRD
+preplace inst Transceiver_5 -pg 1 -lvl 3 -x 1410 -y 1260 -defaultsOSRD
+preplace inst Transceiver_6 -pg 1 -lvl 3 -x 1410 -y 1440 -defaultsOSRD
+preplace inst Transceiver_7 -pg 1 -lvl 3 -x 1410 -y 1970 -defaultsOSRD
+preplace inst Transceiver_8 -pg 1 -lvl 3 -x 1410 -y 2120 -defaultsOSRD
+preplace inst Transceiver_9 -pg 1 -lvl 3 -x 1410 -y 2300 -defaultsOSRD
+preplace inst Transceiver_10 -pg 1 -lvl 3 -x 1410 -y 90 -defaultsOSRD
+preplace inst Transceiver_11 -pg 1 -lvl 3 -x 1410 -y 240 -defaultsOSRD
+preplace inst Transceiver_12 -pg 1 -lvl 3 -x 1410 -y 1610 -defaultsOSRD
+preplace inst Transceiver_13 -pg 1 -lvl 3 -x 1410 -y 1790 -defaultsOSRD
+preplace netloc zynq_ultra_ps_e_0_pl_clk0 1 0 3 10 1380 650 1720 1230
+preplace netloc zynq_ultra_ps_e_0_pl_resetn0 1 0 2 20 1390 630
+preplace netloc rst_ps8_0_99M_peripheral_aresetn 1 1 2 680 1740 1240
+preplace netloc Transceiver_0_irq_raw 1 1 3 690 2210 NJ 2210 1520
+preplace netloc RD_0_1 1 0 3 NJ 2480 NJ 2480 NJ
+preplace netloc Transceiver_0_TD 1 3 1 NJ 2440
+preplace netloc Transceiver_1_irq_raw 1 1 3 740 500 NJ 500 1520
+preplace netloc RD_0_2 1 0 3 NJ 450 NJ 450 NJ
+preplace netloc Transceiver_1_TD 1 3 1 NJ 410
+preplace netloc Transceiver_2_irq_raw 1 1 3 730 670 NJ 670 1520
+preplace netloc RD_0_3 1 0 3 NJ 620 NJ 620 NJ
+preplace netloc Transceiver_2_TD 1 3 1 NJ 580
+preplace netloc Transceiver_3_irq_raw 1 1 3 710 1250 1160J 1170 1530
+preplace netloc RD_0_4 1 0 3 NJ 800 NJ 800 1300J
+preplace netloc Transceiver_3_TD 1 3 1 NJ 910
+preplace netloc Transceiver_4_irq_raw 1 1 3 740 1240 1130J 1000 1520
+preplace netloc RD_0_5 1 0 3 NJ 830 NJ 830 1290J
+preplace netloc Transceiver_4_TD 1 3 1 NJ 1080
+preplace netloc Transceiver_5_irq_raw 1 1 3 730 1270 1130J 1340 1520
+preplace netloc RD_0_6 1 0 3 NJ 860 NJ 860 1280J
+preplace netloc Transceiver_5_TD 1 3 1 NJ 1250
+preplace netloc Transceiver_6_irq_raw 1 1 3 700 1280 1160J 1350 1520
+preplace netloc RD_0_7 1 0 3 NJ 1250 630J 1260 1260J
+preplace netloc Transceiver_6_TD 1 3 1 NJ 1430
+preplace netloc Transceiver_7_irq_raw 1 1 3 720 2200 NJ 2200 1520
+preplace netloc RD_0_8 1 0 3 NJ 2000 NJ 2000 NJ
+preplace netloc Transceiver_7_TD 1 3 1 NJ 1960
+preplace netloc Transceiver_8_irq_raw 1 1 3 750 1700 NJ 1700 1530
+preplace netloc RD_0_9 1 0 3 NJ 2150 NJ 2150 NJ
+preplace netloc Transceiver_8_TD 1 3 1 NJ 2110
+preplace netloc Transceiver_9_irq_raw 1 1 3 760 1880 NJ 1880 1540
+preplace netloc RD_0_10 1 0 3 NJ 2330 NJ 2330 NJ
+preplace netloc Transceiver_9_TD 1 3 1 NJ 2290
+preplace netloc Transceiver_10_irq_raw 1 1 3 650 320 NJ 320 1540
+preplace netloc RD_0_11 1 0 3 NJ 120 NJ 120 NJ
+preplace netloc Transceiver_10_TD 1 3 1 NJ 80
+preplace netloc Transceiver_11_irq_raw 1 1 3 670 330 NJ 330 1520
+preplace netloc RD_0_12 1 0 3 NJ 270 NJ 270 NJ
+preplace netloc Transceiver_11_TD 1 3 1 NJ 230
+preplace netloc Transceiver_12_irq_raw 1 1 3 770 1690 NJ 1690 1520
+preplace netloc RD_0_13 1 0 3 0J 1610 630J 1680 1300J
+preplace netloc Transceiver_12_TD 1 3 1 NJ 1600
+preplace netloc Transceiver_13_irq_raw 1 1 3 780 1870 NJ 1870 1520
+preplace netloc RD_0_14 1 0 3 NJ 1820 NJ 1820 NJ
+preplace netloc Transceiver_13_TD 1 3 1 NJ 1780
+preplace netloc irq_concat_dout 1 2 1 1100 790n
+preplace netloc axi_intc_global_irq 1 0 4 30 1600 640J 1710 1280J 1520 1540
+preplace netloc zynq_ultra_ps_e_0_M_AXI_HPM0_FPD 1 1 1 N 1460
+preplace netloc axi_smc_M14_AXI 1 2 1 1070 730n
+preplace netloc axi_smc_M00_AXI 1 2 1 1100 1340n
+preplace netloc axi_smc_M01_AXI 1 2 1 1060 390n
+preplace netloc axi_smc_M02_AXI 1 2 1 1120 560n
+preplace netloc axi_smc_M03_AXI 1 2 1 1150 890n
+preplace netloc axi_smc_M04_AXI 1 2 1 1250 1060n
+preplace netloc axi_smc_M05_AXI 1 2 1 1270 1230n
+preplace netloc axi_smc_M06_AXI 1 2 1 1300 1410n
+preplace netloc axi_smc_M07_AXI 1 2 1 1120 1480n
+preplace netloc axi_smc_M08_AXI 1 2 1 1090 1500n
+preplace netloc axi_smc_M09_AXI 1 2 1 1060 1520n
+preplace netloc axi_smc_M10_AXI 1 2 1 1110 60n
+preplace netloc axi_smc_M11_AXI 1 2 1 1140 210n
+preplace netloc axi_smc_M12_AXI 1 2 1 N 1580
+preplace netloc axi_smc_M13_AXI 1 2 1 1080 1600n
+levelinfo -pg 1 -20 330 920 1410 1560
+pagesize -pg 1 -db -bbox -sgen -160 0 1700 2530
 "
 }
 {
-   "da_axi4_cnt":"10",
+   "da_axi4_cnt":"20",
    "da_clkrst_cnt":"2",
    "da_zynq_ultra_ps_e_cnt":"1"
 }
