@@ -2,7 +2,8 @@
 *
 
 # 2. Excepciones (¡No ignorar estos!)
-!scripts/*
+!/scripts/
+!/scripts/**
 
 # 3. Importante: No ignorar el propio .gitignore para guardar esta regla
 !.gitignore
