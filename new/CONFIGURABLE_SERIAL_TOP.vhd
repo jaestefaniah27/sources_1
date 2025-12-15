@@ -11,11 +11,11 @@ entity CONFIGURABLE_SERIAL_TOP is
     -- PS ack_in, TX_RDY, Data_out, FULL, EMPTY, PAR ERROR, FRAME_ERROR
     PS_out : out std_logic_vector(13 downto 0);
     -- PS RX
-    PS_RX_DataRead_ErrorOk  : in std_logic_vector(1 downto 0);
+    PS_SERIAL_CONFIG_DataRead_ErrorOk_Send_DataIn : in std_logic_vector(26 downto 0);
     -- PS TX
-    PS_TX_DataIn_Send : in std_logic_vector(9 downto 0);
+    --PS_TX_DataIn_Send : in std_logic_vector(9 downto 0);
     -- PS CONFIG
-    PS_SERIAL_CONFIG : in std_logic_vector(31 downto 0);
+    --PS_SERIAL_CONFIG : in std_logic_vector(15 downto 0);
     TX_RDY_EMPTY : out std_logic_vector(1 downto 0);
     TD : out std_logic;
     RD : in std_logic
@@ -48,8 +48,8 @@ architecture RTL of CONFIGURABLE_SERIAL_TOP is
     FRAME_ERROR : out std_logic;
     ERROR_OK  : in std_logic;
     -- CONFIG
-    baudrate  : in std_logic_vector(21 downto 0); -- configurable to 36 standard bps
-    stop_bit  : in std_logic_vector(2 downto 0);  -- 1, 1.5 or 2 stop bits
+    baud_sel  : in std_logic_vector(5 downto 0); -- configurable to 52 standard bps
+    stop_bit  : in std_logic_vector(1 downto 0);  -- 1, 1.5 or 2 stop bits
     parity    : in std_logic_vector(2 downto 0);  -- 0→Even, 1→Odd, 2→Mark(=1), 3→Space(=0), 4→parity disabled
     bit_order : in std_logic;                     -- 0→LSB-first (default), 1→MSB-first
     data_bits  : in std_logic_vector(2 downto 0)); -- 0→5b, 1→6b, 2→7b, 3→8b, 4→9b
@@ -63,23 +63,23 @@ begin  -- RTL
         port map (
             Reset => Reset,
             Clk   => Clk,
-            Data_in => PS_TX_DataIn_Send(8 downto 0),
-            TX_Send => PS_TX_DataIn_Send(9),
+            Data_in => PS_SERIAL_CONFIG_DataRead_ErrorOk_Send_DataIn(8 downto 0),
+            TX_Send => PS_SERIAL_CONFIG_DataRead_ErrorOk_Send_DataIn(9),
             TX_RDY => TX_RDY_sig,
             TD => TD,
             RD => RD,
             Data_out => Data_out,
-            Data_read => PS_RX_DataRead_ErrorOk(0),
+            Data_read => PS_SERIAL_CONFIG_DataRead_ErrorOk_Send_DataIn(11),
             Full => FULL,
             Empty => EMPTY_sig,
             PAR_ERROR => PAR_ERROR,
             FRAME_ERROR => FRAME_ERROR,
-            ERROR_OK => PS_RX_DataRead_ErrorOk(1),
-            baudrate => PS_SERIAL_CONFIG(21 DOWNTO 0),
-            stop_bit  => PS_SERIAL_CONFIG(24 downto 22),
-            parity    => PS_SERIAL_CONFIG(27 downto 25),
-            bit_order => PS_SERIAL_CONFIG(31),
-            data_bits  => PS_SERIAL_CONFIG(30 downto 28)                 
+            ERROR_OK =>  PS_SERIAL_CONFIG_DataRead_ErrorOk_Send_DataIn(10),
+            baud_sel =>  PS_SERIAL_CONFIG_DataRead_ErrorOk_Send_DataIn(17 DOWNTO 12),
+            stop_bit  => PS_SERIAL_CONFIG_DataRead_ErrorOk_Send_DataIn(19 downto 18),
+            parity    => PS_SERIAL_CONFIG_DataRead_ErrorOk_Send_DataIn(22 downto 20),
+            bit_order => PS_SERIAL_CONFIG_DataRead_ErrorOk_Send_DataIn(26),
+            data_bits => PS_SERIAL_CONFIG_DataRead_ErrorOk_Send_DataIn(25 downto 23)                 
         );
 
     PS_out <= TX_RDY_sig & FRAME_ERROR & PAR_ERROR & FULL & EMPTY_sig & Data_out;

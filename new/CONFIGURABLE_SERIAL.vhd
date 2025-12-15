@@ -24,8 +24,8 @@ entity CONFIGURABLE_SERIAL is
     FRAME_ERROR : out std_logic;
     ERROR_OK  : in std_logic;
     -- CONFIG
-    baudrate  : in std_logic_vector(21 downto 0); -- configurable to 36 standard bps
-    stop_bit  : in std_logic_vector(2 downto 0);  -- 1, 1.5 or 2 stop bits
+    baud_sel  : in std_logic_vector(5 downto 0); -- configurable to 54 standard bps
+    stop_bit  : in std_logic_vector(1 downto 0);  -- 1, 1.5 or 2 stop bits
     parity    : in std_logic_vector(2 downto 0);  -- 0→Even, 1→Odd, 2→Mark(=1), 3→Space(=0), 4→parity disabled
     bit_order : in std_logic;                     -- 0→LSB-first (default), 1→MSB-first
     data_bits  : in std_logic_vector(2 downto 0)); -- 0→5b, 1→6b, 2→7b, 3→8b, 4→9b
@@ -44,8 +44,8 @@ architecture RTL of CONFIGURABLE_SERIAL is
         Reset : in  STD_LOGIC;
         Start : in  STD_LOGIC;
         Data  : in  STD_LOGIC_VECTOR (8 downto 0);
-        baudrate  : in std_logic_vector(21 downto 0); -- configurable to 36 standard bps
-        stop_bit  : in std_logic_vector(2 downto 0);  -- 1 (010), 1.5(011) or 2(100) stop bits ( 2, 3 or 4 half ticks)
+        baud_sel  : in std_logic_vector(5 downto 0); -- configurable to 36 standard bps
+        stop_bit  : in std_logic_vector(1 downto 0);  -- 1 (010), 1.5(011) or 2(100) stop bits ( 2, 3 or 4 half ticks)
         parity    : in std_logic_vector(2 downto 0);  -- 0→Even, 1→Odd, 2→Mark(=1), 3→Space(=0), 4→parity disabled
         bit_order : in std_logic;                     -- 0→LSB-first (default), 1→MSB-first
         data_bits  : in std_logic_vector(2 downto 0); -- 0→5b, 1→6b, 2→7b, 3→8b, 4→9b                
@@ -72,7 +72,7 @@ architecture RTL of CONFIGURABLE_SERIAL is
   component RX_CONFIGURABLE_SERIAL
     Port (  Reset : in STD_LOGIC;
             Clk : in STD_LOGIC;
-            baudrate  : in std_logic_vector(21 downto 0); -- configurable to 36 standard bps
+            baud_sel  : in std_logic_vector(5 downto 0); -- configurable to 36 standard bps
             stop_bit  : in std_logic_vector(2 downto 0);  -- 1 (010), 1.5(011) or 2(100) stop bits ( 2, 3 or 4 half ticks)
             parity    : in std_logic_vector(2 downto 0);  -- 0→Even, 1→Odd, 2→Mark(=1), 3→Space(=0), 4→parity disabled
             bit_order : in std_logic;                     -- 0→LSB-first (default), 1→MSB-first
@@ -119,9 +119,14 @@ architecture RTL of CONFIGURABLE_SERIAL is
   signal data_read_next, data_read_next_reg, data_read_flanc, data_read_reg_2 : std_logic;
   -- tx_send_flanc_detection:
   signal tx_send_next, tx_send_next_reg, tx_send_flanc, tx_send_reg_2 : std_logic;
+  
+  signal stop_bit_extended : std_logic_vector(2 downto 0);
+  --signal stop_bit_shortened : std_logic_vector(1 downto 0);
 
 begin  -- RTL
-
+  stop_bit_extended <=  "011" when stop_bit = "10" else
+                        "100" when stop_bit = "11" else
+                        "010"; -- "00" or "01"
     --flanc detector double reg:
   process(Clk, Reset)
   begin
@@ -149,8 +154,8 @@ begin  -- RTL
       Reset => Reset,
       Start => StartTX,
       Data  => Data_FF,
-      baudrate  => baudrate,
-      stop_bit  => stop_bit,
+      baud_sel  => baud_sel,
+      stop_bit  => stop_bit_extended,
       parity    => parity,
       bit_order => bit_order,
       data_bits  => data_bits,      
@@ -161,8 +166,8 @@ begin  -- RTL
     port map (
       Clk       => Clk,
       Reset     => Reset,
-      baudrate => baudrate,
-      stop_bit  => stop_bit,
+      baud_sel => baud_sel,
+      stop_bit  => stop_bit_extended,
       parity    => parity,
       bit_order => bit_order,
       data_bits  => data_bits,                  

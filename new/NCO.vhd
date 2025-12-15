@@ -1,5 +1,7 @@
 ----------------------------------------------------------------------------------
--- NCO con ROM de baudios (Fclk = 100 MHz, N = 32)
+-- NCO Optimizado con Selector de Baudios (Indexado)
+-- Entrada: 6 bits (0..63) en lugar de 22 bits.
+-- Ahorro de recursos: 16 pines de entrada menos.
 ----------------------------------------------------------------------------------
 library ieee;
 use ieee.std_logic_1164.all;
@@ -11,86 +13,125 @@ entity NCO is
   );
   port(
     clk       : in  std_logic;
-    rst       : in  std_logic;                 -- activo a '0'
+    rst       : in  std_logic;
     en        : in  std_logic;
-    half_mode : in  std_logic;                 -- '0' -> inc normal, '1' -> inc_half (2x baud)
-    baudrate  : in  std_logic_vector(21 downto 0); -- valor decimal del baud
+    half_mode : in  std_logic;                   -- '0'=Normal, '1'=Doble Velocidad
+    baud_sel  : in  std_logic_vector(5 downto 0); -- Selector (0 a 53)
     tick      : out std_logic
   );
 end NCO;
 
 architecture Behavioral of NCO is
-  -- Acumulador y suma
+
+  -- Constante de frecuencia del sistema (Ajustar si cambia el reloj)
+  constant SYSTEM_CLK_FREQ : integer := 100_000_000; 
+
+  -- Función de cálculo de incremento (Synthesis-time)
+  function calc_inc(baud_rate : integer; clk_freq : integer) return unsigned is
+    variable numerator : unsigned(63 downto 0);
+    variable result    : unsigned(63 downto 0);
+  begin
+    numerator := to_unsigned(baud_rate, 64);
+    numerator := numerator sll 32;
+    result    := numerator / to_unsigned(clk_freq, 64);
+    return result(31 downto 0);
+  end function;
+
+  -- Señales internas
   signal phase_reg, phase_next : unsigned(N-1 downto 0);
   signal sum                   : unsigned(N downto 0);
-
-  -- Señales de ROM y selección
   signal inc_rom, inc_half_rom : unsigned(N-1 downto 0);
   signal inc_i                 : unsigned(N-1 downto 0);
-
-  -- Tick registrado
   signal tick_reg, tick_next   : std_logic;
+
 begin
+
   ----------------------------------------------------------------------------
-  -- ROM de baudios -> inc / inc_half (Fclk=100MHz, N=32)
+  -- DECODIFICADOR DE BAUDIOS (LUT)
   ----------------------------------------------------------------------------
-  rom_proc : process(baudrate)
-    variable b : integer;
+  rom_proc : process(baud_sel)
+    variable sel : integer;
   begin
-    b := to_integer(unsigned(baudrate));
+    sel := to_integer(unsigned(baud_sel));
+    
+    -- Valores por defecto (Reset/Desconocido)
     inc_rom      <= (others => '0');
     inc_half_rom <= (others => '0');
 
-    case b is
-      when 110      => inc_rom <= to_unsigned(4724, 32);       inc_half_rom <= to_unsigned(9449, 32);
-      when 300      => inc_rom <= to_unsigned(12885, 32);      inc_half_rom <= to_unsigned(25770, 32);
-      when 600      => inc_rom <= to_unsigned(25770, 32);      inc_half_rom <= to_unsigned(51540, 32);
-      when 1200     => inc_rom <= to_unsigned(51540, 32);      inc_half_rom <= to_unsigned(103079, 32);
-      when 1800     => inc_rom <= to_unsigned(77309, 32);      inc_half_rom <= to_unsigned(154619, 32);
-      when 2400     => inc_rom <= to_unsigned(103079, 32);     inc_half_rom <= to_unsigned(206158, 32);
-      when 4800     => inc_rom <= to_unsigned(206158, 32);     inc_half_rom <= to_unsigned(412317, 32);
-      when 7200     => inc_rom <= to_unsigned(309238, 32);     inc_half_rom <= to_unsigned(618475, 32);
-      when 9600     => inc_rom <= to_unsigned(412317, 32);     inc_half_rom <= to_unsigned(824634, 32);
-      when 14400    => inc_rom <= to_unsigned(618475, 32);     inc_half_rom <= to_unsigned(1236951, 32);
-      when 19200    => inc_rom <= to_unsigned(824634, 32);     inc_half_rom <= to_unsigned(1649267, 32);
-      when 28800    => inc_rom <= to_unsigned(1236951, 32);    inc_half_rom <= to_unsigned(2473901, 32);
-      when 31250    => inc_rom <= to_unsigned(1342177, 32);    inc_half_rom <= to_unsigned(2684355, 32);
-      when 38400    => inc_rom <= to_unsigned(1649267, 32);    inc_half_rom <= to_unsigned(3298535, 32);
-      when 56000    => inc_rom <= to_unsigned(2405182, 32);    inc_half_rom <= to_unsigned(4810363, 32);
-      when 57600    => inc_rom <= to_unsigned(2473901, 32);    inc_half_rom <= to_unsigned(4947802, 32);
-      when 74400    => inc_rom <= to_unsigned(3195456, 32);    inc_half_rom <= to_unsigned(6390911, 32);
-      when 74880    => inc_rom <= to_unsigned(3216897, 32);    inc_half_rom <= to_unsigned(6433794, 32);      
-      when 115200   => inc_rom <= to_unsigned(4947802, 32);    inc_half_rom <= to_unsigned(9895605, 32);
-      when 128000   => inc_rom <= to_unsigned(5497558, 32);    inc_half_rom <= to_unsigned(10995116, 32);
-      when 153600   => inc_rom <= to_unsigned(6597070, 32);    inc_half_rom <= to_unsigned(13194140, 32);
-      when 230400   => inc_rom <= to_unsigned(9895605, 32);    inc_half_rom <= to_unsigned(19791209, 32);
-      when 250000   => inc_rom <= to_unsigned(10737418, 32);   inc_half_rom <= to_unsigned(21474836, 32);      
-      when 256000   => inc_rom <= to_unsigned(10995116, 32);   inc_half_rom <= to_unsigned(21990233, 32);
-      when 312500   => inc_rom <= to_unsigned(13421773, 32);   inc_half_rom <= to_unsigned(26843546, 32);
-      when 460800   => inc_rom <= to_unsigned(19791209, 32);   inc_half_rom <= to_unsigned(39582419, 32);
-      when 500000   => inc_rom <= to_unsigned(21474836, 32);   inc_half_rom <= to_unsigned(42949673, 32);
-      when 576000   => inc_rom <= to_unsigned(24739012, 32);   inc_half_rom <= to_unsigned(49478023, 32);
-      when 614400   => inc_rom <= to_unsigned(26388279, 32);   inc_half_rom <= to_unsigned(52776558, 32);
-      when 750000   => inc_rom <= to_unsigned(32212255, 32);   inc_half_rom <= to_unsigned(64424509, 32);
-      when 921600   => inc_rom <= to_unsigned(39582419, 32);   inc_half_rom <= to_unsigned(79164837, 32);
-      when 1000000  => inc_rom <= to_unsigned(42949673, 32);   inc_half_rom <= to_unsigned(85899346, 32);
-      when 1152000  => inc_rom <= to_unsigned(49478023, 32);   inc_half_rom <= to_unsigned(98956046, 32);
-      when 1500000  => inc_rom <= to_unsigned(64424509, 32);  inc_half_rom <= to_unsigned(128849019, 32);
-      when 1843200  => inc_rom <= to_unsigned(79164837, 32);   inc_half_rom <= to_unsigned(158329674, 32);
-      when 2000000  => inc_rom <= to_unsigned(85899346, 32);   inc_half_rom <= to_unsigned(171798692, 32);
-      when 2500000  => inc_rom <= to_unsigned(107374182, 32);  inc_half_rom <= to_unsigned(214748365, 32);
-      when 3000000  => inc_rom <= to_unsigned(128849019, 32);  inc_half_rom <= to_unsigned(257698038, 32);
-      when 3686400  => inc_rom <= to_unsigned(158329674, 32);  inc_half_rom <= to_unsigned(316659349, 32);
-      when others   => null; -- si no coincide, quedan a cero
+    case sel is
+      -- === BAJAS FRECUENCIAS ===
+      when 0  => inc_rom <= calc_inc(50, SYSTEM_CLK_FREQ);    inc_half_rom <= calc_inc(100, SYSTEM_CLK_FREQ);
+      when 1  => inc_rom <= calc_inc(75, SYSTEM_CLK_FREQ);    inc_half_rom <= calc_inc(150, SYSTEM_CLK_FREQ);
+      when 2  => inc_rom <= calc_inc(110, SYSTEM_CLK_FREQ);   inc_half_rom <= calc_inc(220, SYSTEM_CLK_FREQ);
+      when 3  => inc_rom <= calc_inc(134, SYSTEM_CLK_FREQ);   inc_half_rom <= calc_inc(269, SYSTEM_CLK_FREQ);
+      when 4  => inc_rom <= calc_inc(150, SYSTEM_CLK_FREQ);   inc_half_rom <= calc_inc(300, SYSTEM_CLK_FREQ);
+      when 5  => inc_rom <= calc_inc(200, SYSTEM_CLK_FREQ);   inc_half_rom <= calc_inc(400, SYSTEM_CLK_FREQ);
+      when 6  => inc_rom <= calc_inc(300, SYSTEM_CLK_FREQ);   inc_half_rom <= calc_inc(600, SYSTEM_CLK_FREQ);
+      when 7  => inc_rom <= calc_inc(600, SYSTEM_CLK_FREQ);   inc_half_rom <= calc_inc(1200, SYSTEM_CLK_FREQ);
+      when 8  => inc_rom <= calc_inc(1200, SYSTEM_CLK_FREQ);  inc_half_rom <= calc_inc(2400, SYSTEM_CLK_FREQ);
+      when 9  => inc_rom <= calc_inc(1800, SYSTEM_CLK_FREQ);  inc_half_rom <= calc_inc(3600, SYSTEM_CLK_FREQ);
+      when 10 => inc_rom <= calc_inc(2000, SYSTEM_CLK_FREQ);  inc_half_rom <= calc_inc(4000, SYSTEM_CLK_FREQ);
+      when 11 => inc_rom <= calc_inc(2400, SYSTEM_CLK_FREQ);  inc_half_rom <= calc_inc(4800, SYSTEM_CLK_FREQ);
+      when 12 => inc_rom <= calc_inc(3600, SYSTEM_CLK_FREQ);  inc_half_rom <= calc_inc(7200, SYSTEM_CLK_FREQ);
+      when 13 => inc_rom <= calc_inc(4800, SYSTEM_CLK_FREQ);  inc_half_rom <= calc_inc(9600, SYSTEM_CLK_FREQ);
+      when 14 => inc_rom <= calc_inc(7200, SYSTEM_CLK_FREQ);  inc_half_rom <= calc_inc(14400, SYSTEM_CLK_FREQ);
+      
+      -- === ESTÁNDARES COMUNES ===
+      when 15 => inc_rom <= calc_inc(9600, SYSTEM_CLK_FREQ);  inc_half_rom <= calc_inc(19200, SYSTEM_CLK_FREQ);
+      when 16 => inc_rom <= calc_inc(12000, SYSTEM_CLK_FREQ); inc_half_rom <= calc_inc(24000, SYSTEM_CLK_FREQ);
+      when 17 => inc_rom <= calc_inc(14400, SYSTEM_CLK_FREQ); inc_half_rom <= calc_inc(28800, SYSTEM_CLK_FREQ);
+      when 18 => inc_rom <= calc_inc(19200, SYSTEM_CLK_FREQ); inc_half_rom <= calc_inc(38400, SYSTEM_CLK_FREQ);
+      when 19 => inc_rom <= calc_inc(28800, SYSTEM_CLK_FREQ); inc_half_rom <= calc_inc(57600, SYSTEM_CLK_FREQ);
+      
+      -- === PROTOCOLOS ESPECIALES ===
+      when 20 => inc_rom <= calc_inc(31250, SYSTEM_CLK_FREQ); inc_half_rom <= calc_inc(62500, SYSTEM_CLK_FREQ); -- MIDI
+      when 21 => inc_rom <= calc_inc(38400, SYSTEM_CLK_FREQ); inc_half_rom <= calc_inc(76800, SYSTEM_CLK_FREQ);
+      when 22 => inc_rom <= calc_inc(50000, SYSTEM_CLK_FREQ); inc_half_rom <= calc_inc(100000, SYSTEM_CLK_FREQ);
+      when 23 => inc_rom <= calc_inc(56000, SYSTEM_CLK_FREQ); inc_half_rom <= calc_inc(112000, SYSTEM_CLK_FREQ);
+      when 24 => inc_rom <= calc_inc(57600, SYSTEM_CLK_FREQ); inc_half_rom <= calc_inc(115200, SYSTEM_CLK_FREQ);
+      
+      -- === ALTA VELOCIDAD ===
+      when 25 => inc_rom <= calc_inc(64000, SYSTEM_CLK_FREQ); inc_half_rom <= calc_inc(128000, SYSTEM_CLK_FREQ);
+      when 26 => inc_rom <= calc_inc(74400, SYSTEM_CLK_FREQ); inc_half_rom <= calc_inc(148800, SYSTEM_CLK_FREQ);
+      when 27 => inc_rom <= calc_inc(74880, SYSTEM_CLK_FREQ); inc_half_rom <= calc_inc(149760, SYSTEM_CLK_FREQ);
+      when 28 => inc_rom <= calc_inc(76800, SYSTEM_CLK_FREQ); inc_half_rom <= calc_inc(153600, SYSTEM_CLK_FREQ);
+      
+      when 29 => inc_rom <= calc_inc(115200, SYSTEM_CLK_FREQ); inc_half_rom <= calc_inc(230400, SYSTEM_CLK_FREQ); -- STD
+      when 30 => inc_rom <= calc_inc(128000, SYSTEM_CLK_FREQ); inc_half_rom <= calc_inc(256000, SYSTEM_CLK_FREQ);
+      when 31 => inc_rom <= calc_inc(153600, SYSTEM_CLK_FREQ); inc_half_rom <= calc_inc(307200, SYSTEM_CLK_FREQ);
+      when 32 => inc_rom <= calc_inc(200000, SYSTEM_CLK_FREQ); inc_half_rom <= calc_inc(400000, SYSTEM_CLK_FREQ);
+      when 33 => inc_rom <= calc_inc(230400, SYSTEM_CLK_FREQ); inc_half_rom <= calc_inc(460800, SYSTEM_CLK_FREQ);
+      when 34 => inc_rom <= calc_inc(250000, SYSTEM_CLK_FREQ); inc_half_rom <= calc_inc(500000, SYSTEM_CLK_FREQ); -- DMX
+      when 35 => inc_rom <= calc_inc(256000, SYSTEM_CLK_FREQ); inc_half_rom <= calc_inc(512000, SYSTEM_CLK_FREQ);
+      when 36 => inc_rom <= calc_inc(312500, SYSTEM_CLK_FREQ); inc_half_rom <= calc_inc(625000, SYSTEM_CLK_FREQ);
+      when 37 => inc_rom <= calc_inc(400000, SYSTEM_CLK_FREQ); inc_half_rom <= calc_inc(800000, SYSTEM_CLK_FREQ);
+      when 38 => inc_rom <= calc_inc(460800, SYSTEM_CLK_FREQ); inc_half_rom <= calc_inc(921600, SYSTEM_CLK_FREQ);
+      when 39 => inc_rom <= calc_inc(500000, SYSTEM_CLK_FREQ); inc_half_rom <= calc_inc(1000000, SYSTEM_CLK_FREQ);
+      when 40 => inc_rom <= calc_inc(576000, SYSTEM_CLK_FREQ); inc_half_rom <= calc_inc(1152000, SYSTEM_CLK_FREQ);
+      when 41 => inc_rom <= calc_inc(614400, SYSTEM_CLK_FREQ); inc_half_rom <= calc_inc(1228800, SYSTEM_CLK_FREQ);
+      when 42 => inc_rom <= calc_inc(750000, SYSTEM_CLK_FREQ); inc_half_rom <= calc_inc(1500000, SYSTEM_CLK_FREQ);
+      when 43 => inc_rom <= calc_inc(921600, SYSTEM_CLK_FREQ); inc_half_rom <= calc_inc(1843200, SYSTEM_CLK_FREQ);
+      
+      -- === MEGABAUDIOS ===
+      when 44 => inc_rom <= calc_inc(1000000, SYSTEM_CLK_FREQ); inc_half_rom <= calc_inc(2000000, SYSTEM_CLK_FREQ);
+      when 45 => inc_rom <= calc_inc(1152000, SYSTEM_CLK_FREQ); inc_half_rom <= calc_inc(2304000, SYSTEM_CLK_FREQ);
+      when 46 => inc_rom <= calc_inc(1500000, SYSTEM_CLK_FREQ); inc_half_rom <= calc_inc(3000000, SYSTEM_CLK_FREQ);
+      when 47 => inc_rom <= calc_inc(1843200, SYSTEM_CLK_FREQ); inc_half_rom <= calc_inc(3686400, SYSTEM_CLK_FREQ);
+      when 48 => inc_rom <= calc_inc(2000000, SYSTEM_CLK_FREQ); inc_half_rom <= calc_inc(4000000, SYSTEM_CLK_FREQ);
+      when 49 => inc_rom <= calc_inc(2500000, SYSTEM_CLK_FREQ); inc_half_rom <= calc_inc(5000000, SYSTEM_CLK_FREQ);
+      when 50 => inc_rom <= calc_inc(3000000, SYSTEM_CLK_FREQ); inc_half_rom <= calc_inc(6000000, SYSTEM_CLK_FREQ);
+      when 51 => inc_rom <= calc_inc(3500000, SYSTEM_CLK_FREQ); inc_half_rom <= calc_inc(7000000, SYSTEM_CLK_FREQ);
+      when 52 => inc_rom <= calc_inc(3686400, SYSTEM_CLK_FREQ); inc_half_rom <= calc_inc(7372800, SYSTEM_CLK_FREQ);
+      when 53 => inc_rom <= calc_inc(4000000, SYSTEM_CLK_FREQ); inc_half_rom <= calc_inc(8000000, SYSTEM_CLK_FREQ);
+
+      when others => null; -- Reservado para el futuro
     end case;
   end process;
 
-  -- Selección de incremento según half_mode
+  -- Multiplexor de salida (Normal vs Doble)
   inc_i <= inc_half_rom when (half_mode = '1') else inc_rom;
 
-  ----------------------------------------------------------------------------
-  -- Registro de fase y tick
-  ----------------------------------------------------------------------------
+  -- Acumulador de Fase
   reg_proc : process(clk, rst)
   begin
     if rst = '0' then
@@ -104,9 +145,6 @@ begin
     end if;
   end process;
 
-  ----------------------------------------------------------------------------
-  -- Lógica siguiente estado / salida
-  ----------------------------------------------------------------------------
   sum        <= ('0' & phase_reg) + ('0' & inc_i);
   phase_next <= sum(N-1 downto 0);
   tick_next  <= sum(N);

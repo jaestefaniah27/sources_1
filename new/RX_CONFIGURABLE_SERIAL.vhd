@@ -34,7 +34,7 @@ use IEEE.NUMERIC_STD.ALL;
 entity RX_CONFIGURABLE_SERIAL is
     Port (  Reset : in STD_LOGIC;
             Clk : in STD_LOGIC;
-            baudrate  : in std_logic_vector(21 downto 0); -- configurable to 36 standard bps
+            baud_sel  : in std_logic_vector(5 downto 0); -- configurable to 36 standard bps
             stop_bit  : in std_logic_vector(2 downto 0);  -- 1 (010), 1.5(011) or 2(100) stop bits ( 2, 3 or 4 half ticks)
             parity    : in std_logic_vector(2 downto 0);  -- 0→Even, 1→Odd, 2→Mark(=1), 3→Space(=0), 4→parity disabled
             bit_order : in std_logic;                     -- 0→LSB-first (default), 1→MSB-first
@@ -60,7 +60,7 @@ component NCO
     rst       : in  std_logic;                 -- activo a '0'
     en        : in  std_logic;
     half_mode : in  std_logic;                 -- '0' -> inc normal, '1' -> inc_half (2x baud)
-    baudrate  : in  std_logic_vector(21 downto 0); -- valor decimal del baud
+    baud_sel  : in  std_logic_vector(5 downto 0); 
     tick      : out std_logic
   );
   end component;
@@ -99,7 +99,7 @@ begin
         rst       => rst_NCO_mux,
         en        => en_NCO,
         half_mode => half_mode_NCO,
-        baudrate  => baudrate,
+        baud_sel  => baud_sel,
         tick      => NCO_tick);
 
     -- outputs
